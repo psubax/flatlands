@@ -26,14 +26,19 @@ X = X / 255.  # Scale down to range [0, 1]
 # model.save('model.h5')
 
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(5, 5), padding='same', activation='relu', input_shape=[50, 50, 1]))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.1))
-model.add(Conv2D(16, (5, 5), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.1))
+model.add(Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu', input_shape=[50, 50, 1]))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(Dropout(0.1))
+model.add(Conv2D(16, kernel_size=(4, 4), padding='same', activation='relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(Dropout(0.1))
+model.add(Conv2D(32, kernel_size=(5, 5), padding='same', activation='relu'))
+model.add(MaxPooling2D(pool_size=(3, 3)))
 model.add(Flatten())
-model.add(Dense(26, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='relu'))
 model.add(Dense(5, activation='softmax'))
 model.compile(loss="sparse_categorical_crossentropy",
               optimizer=keras.optimizers.Adam(),
@@ -42,8 +47,8 @@ model.summary()
 
 loss = model.fit(X,
                  y,
-                 epochs=13,
-                 batch_size=64,
+                 epochs=32,
+                 batch_size=128,
                  validation_split=0.2)
 
 model.save('model.h5')
