@@ -3,14 +3,13 @@ import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-import tensorflow.keras as keras
-from tensorflow.keras.layers import Dense, Input, Flatten, Conv2D, BatchNormalization, \
-    Activation, Dropout, MaxPooling2D
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.metrics import SparseCategoricalAccuracy
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import TensorBoard
+import keras
+from keras.layers import Dense, Input, Flatten, Conv2D, BatchNormalization, \
+    Activation, Dropout, MaxPooling2D, RandomRotation, ZeroPadding2D
+from keras.models import Sequential
+from keras.metrics import SparseCategoricalAccuracy
+from keras.optimizers import Adam
+from keras.callbacks import TensorBoard
 
 data = np.load('flatland_train.npz')
 X = data['X']
@@ -26,7 +25,9 @@ X = X / 255.  # Scale down to range [0, 1]
 # model.save('model.h5')
 
 model = Sequential()
-model.add(Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu', input_shape=[50, 50, 1]))
+model.add(ZeroPadding2D(padding=11, input_shape=[50, 50, 1]))
+model.add(RandomRotation(factor=np.pi/2, fill_mode='constant', fill_value=0))
+model.add(Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu', input_shape=[72, 72, 1]))
 # model.add(MaxPooling2D(pool_size=(2, 2)))
 # model.add(Dropout(0.1))
 model.add(Conv2D(16, kernel_size=(4, 4), padding='same', activation='relu'))
@@ -47,7 +48,7 @@ model.summary()
 
 loss = model.fit(X,
                  y,
-                 epochs=32,
+                 epochs=50,
                  batch_size=128,
                  validation_split=0.2)
 
