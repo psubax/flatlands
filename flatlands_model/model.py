@@ -43,6 +43,26 @@ X = X / 255.  # Scale down to range [0, 1]
 # X = X_padded
 # X = np.expand_dims(X, (-1))
 
+X = np.expand_dims(X, axis=-1)
+train_data, test_data, train_labels, test_labels = train_test_split(X, y, test_size=0.2, random_state=42)
+
+datagen = ImageDataGenerator(
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    fill_mode='constant'
+)
+
+train_generator = datagen.flow(
+    train_data,
+    train_labels,
+    batch_size=128
+)
+
+
 model = Sequential()
 # model.add(ZeroPadding2D(11, input_shape=[50, 50, 1]))
 model.add(RandomRotation(factor=np.pi/6, input_shape=[50, 50, 1]))
@@ -92,13 +112,12 @@ model.summary()
 # model.fit(train_generator, epochs=50, batch_size=256)
 # pred = model.predict(X_test).argmax(axis=1)
 # print('Accuracy on test set - {0:.02%}'.format((pred == y_test).mean()))
-loss = model.fit(X,
-                 y,
+loss = model.fit(train_generator,
                  epochs=1,
-                 batch_size=128,
-                 validation_split=0.2)
+                 validation_data=(test_data, test_labels))
 
 model.save('model.h5')
+
 
 # image = X[0, :, :, 0]
 #
