@@ -65,10 +65,10 @@ train_generator = datagen.flow(
 
 model = Sequential()
 # model.add(ZeroPadding2D(11, input_shape=[50, 50, 1]))
-model.add(RandomRotation(factor=np.pi/6, input_shape=[50, 50, 1]))
+# model.add(RandomRotation(factor=np.pi/6, input_shape=[50, 50, 1]))
 # model.add(RandomTranslation(height_factor=(-0.2, 0.2), width_factor=(-0.2, 0.2)))#, fill_mode='constant', fill_value=0.0))
-model.add(RandomFlip(input_shape=[50, 50, 1]))
-model.add(RandomContrast(factor=0.5))
+# model.add(RandomFlip(input_shape=[50, 50, 1]))
+model.add(RandomContrast(factor=0.5, input_shape=[50, 50, 1]))
 # model.add(ZeroPadding2D(padding=11, input_shape=[50, 50, 1]))
 # model.add(RandomRotation(factor=np.pi / 2, fill_mode='constant', fill_value=0))
 model.add(Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu'))
