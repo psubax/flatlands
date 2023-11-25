@@ -47,7 +47,7 @@ model = Sequential()
 # model.add(ZeroPadding2D(11, input_shape=[50, 50, 1]))
 # model.add(RandomRotation(factor=np.pi/6, fill_mode='constant', fill_value=0.0, input_shape=[50, 50, 1]))
 # model.add(RandomTranslation(height_factor=(-0.2, 0.2), width_factor=(-0.2, 0.2), fill_mode='constant', fill_value=0.0))
-model.add(RandomFlip())
+model.add(RandomFlip(input_shape=[50, 50, 1]))
 model.add(RandomContrast(factor=0.5))
 # model.add(ZeroPadding2D(padding=11, input_shape=[50, 50, 1]))
 # model.add(RandomRotation(factor=np.pi / 2, fill_mode='constant', fill_value=0))
@@ -94,7 +94,7 @@ model.summary()
 # print('Accuracy on test set - {0:.02%}'.format((pred == y_test).mean()))
 loss = model.fit(X,
                  y,
-                 epochs=5,
+                 epochs=1,
                  batch_size=128,
                  validation_split=0.2)
 
