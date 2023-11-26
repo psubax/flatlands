@@ -102,4 +102,4 @@ plt.ylabel('Metric Value')
 plt.legend()
 plt.show()
 
-model.save('try11.h5')
+model.save('model_final.h5')
