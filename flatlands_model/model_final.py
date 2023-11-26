@@ -1,20 +1,12 @@
-import os
-import time
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import keras
-from keras.layers import Dense, Input, Flatten, Conv2D, BatchNormalization, \
-    Activation, Dropout, MaxPooling2D, RandomRotation, ZeroPadding2D, Reshape, \
-    RandomTranslation, RandomContrast, RandomBrightness, RandomFlip, Resizing
+from keras.layers import Dense, Flatten, Conv2D, \
+    Dropout, MaxPooling2D, RandomContrast
 from keras.models import Sequential
 from keras.metrics import SparseCategoricalAccuracy
-from keras.optimizers import Adam
-from keras.callbacks import TensorBoard
-from PIL import Image
 from keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
-import cv2
+
 
 data = np.load('flatland_train.npz')
 X = data['X']
@@ -24,6 +16,7 @@ y[y != 0] -= 2  # Correct labels so that triangle is mapped to class 1
 X = X / 255.  # Scale down to range [0, 1]
 
 # Augmentation factor determines the size of augmented data
+# Tried with 1 and 3, both times performance suffered
 augmentation_factor = 2
 # Determines the size of augmented image
 new_dim = 50
